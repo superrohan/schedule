@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: schedulerapp-service
+
+  security:
+    oauth2:
+      client:
+        registration:
+          controller-app:
+            client-id: ${AZURE_CLIENT_ID:your-client-id}
+            client-secret: ${AZURE_CLIENT_SECRET:your-client-secret}
+            authorization-grant-type: client_credentials
+            scope: api://controller-app/.default
+        provider:
+          controller-app:
+            token-uri: ${AZURE_TOKEN_URI:https://login.microsoftonline.com/your-tenant-id/oauth2/v2.0/token}
+
+controller-app:
+  base-url: ${CONTROLLER_APP_BASE_URL:http://localhost:8081}
+
+scheduler:
+  scan:
+    cron: "0 */5 * * * *"
+
+server:
+  port: 8080
+
+logging:
+  level:
+    com.enterprise.scheduler: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] [%X{correlationId}] %-5level %logger{36} - %msg%n"
